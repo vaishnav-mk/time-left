@@ -17,6 +17,26 @@ body {
   align-items: center;
 }
 
+#bottom-left-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#logo {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+#message {
+  font-size: 1em;
+  color: white;
+}
+
 #canvas {
   height: 100%;
   width: 100%;

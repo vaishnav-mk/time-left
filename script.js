@@ -5,7 +5,7 @@ const startTimerElement = document.getElementById("start-timer");
 const endTimerElement = document.getElementById("end-timer");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const imageSrc = "imgs/degree.jpg";
+const imageSrc = "imgs/logo.png";
 
 const cert = {
   sizeX: 196,
@@ -20,9 +20,14 @@ const cert = {
 const image = new Image(196, 150);
 image.src = imageSrc;
 
+let rotationAngle = 0;
+
 function certMove() {
   cert.x += cert.dx;
   cert.y += cert.dy;
+
+  rotationAngle += 0.01;
+
   if (cert.x + cert.sizeX >= canvas.width || cert.x < 0) {
     cert.dx *= -1;
     cert.invertColors = !cert.invertColors;
@@ -37,28 +42,49 @@ function certMove() {
   } else {
     ctx.filter = "none";
   }
-  ctx.drawImage(image, cert.x, cert.y, cert.sizeX, cert.sizeY);
+
+  ctx.save();
+
+  ctx.translate(cert.x + cert.sizeX / 2, cert.y + cert.sizeY / 2);
+
+  ctx.rotate(rotationAngle);
+
+  ctx.drawImage(
+    image,
+    -cert.sizeX / 2,
+    -cert.sizeY / 2,
+    cert.sizeX,
+    cert.sizeY
+  );
+
+  ctx.restore();
+
   ctx.filter = "none";
   window.requestAnimationFrame(certMove);
 }
 
 function calcTime(startDate, endDate) {
   const now = new Date();
-  
+
   const timeElapsed = now - startDate;
   const elapsedDays = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
-  const elapsedHours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const elapsedMinutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+  const elapsedHours = Math.floor(
+    (timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const elapsedMinutes = Math.floor(
+    (timeElapsed % (1000 * 60 * 60)) / (1000 * 60)
+  );
   const elapsedSeconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
   startTimerElement.textContent = `Downfall started ${elapsedDays} days, ${elapsedHours} hours, ${elapsedMinutes} minutes, ${elapsedSeconds} seconds ago`;
 
   const timeLeft = endDate - now;
   const leftDays = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-  const leftHours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const leftHours = Math.floor(
+    (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
   const leftMinutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   const leftSeconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
   endTimerElement.textContent = `Downfall will end in ${leftDays} days, ${leftHours} hours, ${leftMinutes} minutes, ${leftSeconds} seconds`;
-
 }
 
 function startTimers(startDate, endDate) {
