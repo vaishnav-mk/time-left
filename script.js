@@ -5,7 +5,7 @@ const startTimerElement = document.getElementById("start-timer");
 const endTimerElement = document.getElementById("end-timer");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const imageSrc = "imgs/logo.png";
+let imageSrc = "imgs/logo.png";
 
 const cert = {
   sizeX: 196,
@@ -20,24 +20,36 @@ const cert = {
 const image = new Image(196, 150);
 image.src = imageSrc;
 
+let isEasterEggEnabled = false;
+
+const triggerEasterEgg = () => {
+  isEasterEggEnabled = !isEasterEggEnabled;
+  imageSrc = isEasterEggEnabled ? "imgs/keepYourselfSafe.png" : "imgs/logo.png";
+  image.src = imageSrc;
+};
+
 let rotationAngle = 0;
 
 function certMove() {
   cert.x += cert.dx;
   cert.y += cert.dy;
 
-  rotationAngle += 0.01;
+  rotationAngle += isEasterEggEnabled ? 0.1 : 0.01;
 
   if (cert.x + cert.sizeX >= canvas.width || cert.x < 0) {
     cert.dx *= -1;
-    cert.invertColors = !cert.invertColors;
+    if (!isEasterEggEnabled) {
+      cert.invertColors = !cert.invertColors;
+    }
   }
   if (cert.y + cert.sizeY >= canvas.height || cert.y < 0) {
     cert.dy *= -1;
-    cert.invertColors = !cert.invertColors;
+    if (!isEasterEggEnabled) {
+      cert.invertColors = !cert.invertColors;
+    }
   }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (cert.invertColors) {
+  if (!isEasterEggEnabled && cert.invertColors) {
     ctx.filter = "invert(1)";
   } else {
     ctx.filter = "none";
