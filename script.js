@@ -1,7 +1,8 @@
 let counter = 0;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const timerElement = document.getElementById("timer");
+const startTimerElement = document.getElementById("start-timer");
+const endTimerElement = document.getElementById("end-timer");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const imageSrc = "imgs/degree.jpg";
@@ -41,25 +42,31 @@ function certMove() {
   window.requestAnimationFrame(certMove);
 }
 
-function calcTime(endDate) {
+function calcTime(startDate, endDate) {
   const now = new Date();
+  
+  const timeElapsed = now - startDate;
+  const elapsedDays = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
+  const elapsedHours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const elapsedMinutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+  const elapsedSeconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+  startTimerElement.textContent = `Downfall started ${elapsedDays} days, ${elapsedHours} hours, ${elapsedMinutes} minutes, ${elapsedSeconds} seconds ago`;
+
   const timeLeft = endDate - now;
+  const leftDays = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const leftHours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const leftMinutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const leftSeconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+  endTimerElement.textContent = `Downfall will end in ${leftDays} days, ${leftHours} hours, ${leftMinutes} minutes, ${leftSeconds} seconds`;
 
-  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-  timerElement.textContent = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds left`;
 }
 
-function startTimer(endDate) {
-  setInterval(() => calcTime(endDate), 1000);
+function startTimers(startDate, endDate) {
+  setInterval(() => calcTime(startDate, endDate), 1000);
 }
 
 certMove();
 
-const startDate = new Date("2026-05-18T00:00:00");
-startTimer(startDate);
+const startDate = new Date("2022-09-12T00:00:00");
+const endDate = new Date("2026-05-18T00:00:00");
+startTimers(startDate, endDate);

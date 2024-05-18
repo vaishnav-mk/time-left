@@ -26,9 +26,20 @@ body {
   background-color: black;
 }
 
-#timer {
+#start-timer {
   margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 1.5em;
+  color: #ef1718;
+  text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
+}
+
+#end-timer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+  color: #3ee854;
+  text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 20px #00ff00;
 }
 
 @media screen and (max-width: 600px) {
